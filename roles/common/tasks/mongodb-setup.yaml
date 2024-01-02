@@ -9,12 +9,12 @@
     state: present
 
 - name: get the categories count
-  ansible.builtin.command:  mongo --host {{MONGODB_HOST}} --quiet --eval 'db = db.getSiblingDB("catalogue"); db.products.count()'
+  ansible.builtin.command:  mongo --host mongodb.saachi.online --quiet --eval 'db = db.getSiblingDB("catalogue"); db.products.count()'
   register: products_count
   when: component == "catalogue"
 
 - name: get the user count
-  ansible.builtin.command:  mongo --host {{MONGODB_HOST}} --quiet --eval 'db = db.getSiblingDB("users"); db.users.count()'
+  ansible.builtin.command:  mongo --host mongodb.saachi.online --quiet --eval 'db = db.getSiblingDB("users"); db.users.count()'
   register: users_count
   when: component == "user"
 
@@ -23,11 +23,11 @@
 #     msg: "product count: {{product_count}}"
 
 - name: "load catalogue data"
-  ansible.builtin.shell: "mongo --host {{MONGODB_HOST}} < /app/schema/{{component}}.js"
+  ansible.builtin.shell: "mongo --host mongodb.saachi.online < /app/schema/{{component}}.js"
   when: component == "catalogue" and products_count.stdout == "0"  # keep double quotes
   #ignore_errors: true
 
 - name: "load user data"
-  ansible.builtin.shell: "mongo --host {{MONGODB_HOST}} < /app/schema/{{component}}.js"
+  ansible.builtin.shell: "mongo --host mongodb.saachi.online < /app/schema/{{component}}.js"
   when: component == "user" and users_count.stdout == "0"  # keep double quotes
   #ignore_errors: true
