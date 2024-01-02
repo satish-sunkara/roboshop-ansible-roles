@@ -1,0 +1,5 @@
+- name: "{{component}}"
+  hostts: "{{component}}"
+  become: yes
+  roles:
+  - "{{component}}"
